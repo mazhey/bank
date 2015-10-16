@@ -31,7 +31,7 @@ public class Validator {
 		return d;
 	}
 
-	public static Date getCalendar(Scanner sc, String prompt) {
+	public static Date getDate(Scanner sc, String prompt) {
 
 		Date date = new Date();
 		

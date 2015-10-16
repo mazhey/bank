@@ -45,9 +45,9 @@ public class Transcation{
     }
 	public String history(){
 		String str="";
-		str += "The type is " + type +"\n";
-		str += "The amount is " + amount + "\n";
-		str += "The date is "  + date;
+		str += "Transaction type: " + type +"\n";
+		str += "Transaction amount: " + getFormattedPrice() + "\n";
+		str += "Transaction date: "  + date;
 		return str;
 		
 		

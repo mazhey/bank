@@ -1,3 +1,4 @@
+import java.text.NumberFormat;
 import java.util.ArrayList;
 //import java.util.Date;
 //import java.util.Map;
@@ -55,28 +56,68 @@ public class Account {
 		}
 	}
 	
+	public void sortByAmount(){
+		int i,j;
+		int size = transaction.size();
+		for (i=0; i<size-1; i++){
+			for (j=i; j < size; j++){
+				if (transaction.get(i).getAmount() < transaction.get(j).getAmount()){
+					Transcation temp = transaction.get(i);
+					transaction.add(i,transaction.get(j));
+					transaction.add(j,temp);
+				}
+					
+			}
+		}
+	}
 	
-	public double calculateNewBalance(){
-		double newBalance = this.getBalance();
+	
+	public String calculateNewBalance(){
+		double newBalanceByDate = this.getBalance();
+		int i;
 		this.sortTransactions();
-		for (int i=0; i<transaction.size(); i++){
-			newBalance -= transaction.get(i).getAmount();
-			if (newBalance < 0){
-				newBalance -= 35;
+		
+		for (i=0; i<transaction.size(); i++){
+			newBalanceByDate -= transaction.get(i).getAmount();
+			if (newBalanceByDate < 0){
+				newBalanceByDate -= 35;
 			}
 			
 		}
-		this.setBalance(newBalance);
-		return newBalance;
+		double newBalanceByAmount = this.getBalance();
+		this.sortByAmount();
+		for (i=0; i<transaction.size(); i++){
+			newBalanceByAmount -= transaction.get(i).getAmount();
+			if (newBalanceByAmount < 0){
+				newBalanceByAmount -= 35;
+			}
+			
+		}
+		if (newBalanceByAmount>newBalanceByDate){
+			this.setBalance(newBalanceByDate);
+			return getFormattedPrice();
+		}
+		else
+		{
+			this.setBalance(newBalanceByAmount);
+			return getFormattedPrice();
+		}
+		
 	}
+	public String getFormattedPrice(){
+    	NumberFormat currency = NumberFormat.getCurrencyInstance();
+    	return currency.format(balance);
+    }
 	
 	public String getAccountTransaction(){
 		String strAccount="";
-		strAccount += this.accountNum + "\n";
-		strAccount += this.accountName + "\n";
-		strAccount += this.balance + "\n";
+		strAccount += "Account#: " + this.accountNum + "\n";
+		strAccount += "Account Name: " + this.accountName + "\n";
+		strAccount += "Account Initial Balance: " + getFormattedPrice() + "\n";
+		strAccount += "Transactions History: \n";
 		for (int i=0; i<transaction.size(); i++){
 			strAccount += transaction.get(i).history();
+			strAccount += "\n";
 		}
 		return strAccount;
 	}

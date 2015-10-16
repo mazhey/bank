@@ -29,62 +29,58 @@ public class BankingApp {
 
 			Account tempAccount = new Account(accountNum, accountName, balance);
 			myAccount.add(tempAccount);
-
+			System.out.println("\n\n");
 			accountNum = Validator.getString(keyboard,
 					"Enter an account # or -1 to stop entering accounts : ");
 
 		}
 
+		System.out.println();
 		// Create Transactions
 		type = Validator
 				.getString(
 						keyboard,
-						"Enter a transaction type (Check, Debit card, Deposit or Withdrawal) or -1 to finish : ").toLowerCase();
-		
-		while (!Validator.validateTransactionType(type)){
-			System.out.println("Enter a valid transaction type");
-			type = Validator
-					.getString(
-							keyboard,
-							"Enter a transaction type (Check, Debit card, Deposit or Withdrawal) or -1 to finish : ").toLowerCase();
-			
-		}
+						"Enter a transaction type (Check, Debit card, Deposit or Withdrawal) or -1 to finish : ")
+				.toLowerCase();
 
 		while (!type.equals("-1")) {
+			while (!Validator.validateTransactionType(type)) {
+				System.out.println("Enter a valid transaction type");
+				type = Validator
+						.getString(
+								keyboard,
+								"Enter a transaction type (Check, Debit card, Deposit or Withdrawal) or -1 to finish : ")
+						.toLowerCase();
+
+			}
 
 			accountNum = Validator.getString(keyboard, "Enter an account # ");
 			amount = Validator.getDouble(keyboard,
 					"Enter the amount of the check: ");
-			date = Validator.getCalendar(keyboard,
-					"Enter the date of the check:");
-			
+			date = Validator.getDate(keyboard, "Enter the date of the check:");
+
 			Transcation tempTranscation = new Transcation(type, amount, date);
-			
-			for (int i=0; i< myAccount.size(); i++) {
+
+			for (int i = 0; i < myAccount.size(); i++) {
 				if (myAccount.get(i).getAccountNum().equals(accountNum)) {
 					myAccount.get(i).addTranscation(tempTranscation);
 				}
 
 			}
+			System.out.println("\n\n");
 			type = Validator
 					.getString(
 							keyboard,
-							"Enter a transaction type (Check, Debit card, Deposit or Withdrawal) or -1 to finish : ").toLowerCase();
-			
-			while (!Validator.validateTransactionType(type)){
-				System.out.println("Enter a valid transaction type");
-				type = Validator
-						.getString(
-								keyboard,
-								"Enter a transaction type (Check, Debit card, Deposit or Withdrawal) or -1 to finish : ").toLowerCase();
-				
-			}
+							"Enter a transaction type (Check, Debit card, Deposit or Withdrawal) or -1 to finish : ")
+					.toLowerCase();
+
 		}
-		//System.out.println(myAccount.get(0).calculate());
-		for (int i=0; i< myAccount.size(); i++){
-			System.out.println(myAccount.get(i).getAccountTransaction());
-			System.out.print("The balance is: ");
-		System.out.println(myAccount.get(i).calculateNewBalance());
+		// System.out.println(myAccount.get(0).calculate());
+		for (int i = 0; i < myAccount.size(); i++) {
+			System.out.println("\n" + myAccount.get(i).getAccountTransaction());
+			System.out.print("The new balance is: " +myAccount.get(i).calculateNewBalance());
+			//System.out.println(myAccount.get(i).calculateNewBalance());
+			//System.out.println("\n");
 		}
 	}
 
